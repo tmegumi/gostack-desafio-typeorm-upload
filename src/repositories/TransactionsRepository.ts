@@ -11,7 +11,27 @@ interface Balance {
 @EntityRepository(Transaction)
 class TransactionsRepository extends Repository<Transaction> {
   public async getBalance(): Promise<Balance> {
-    // TODO
+    const initialValue = 0;
+
+    const incomeTransactions = await this.find({ where: { type: 'income' } });
+    const outcomeTransactions = await this.find({ where: { type: 'outcome' } });
+
+    const incomeBalance = incomeTransactions.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.value,
+      initialValue,
+    );
+    const outcomeBalance = outcomeTransactions.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.value,
+      initialValue,
+    );
+
+    const totalBalance = incomeBalance - outcomeBalance;
+
+    return {
+      income: incomeBalance,
+      outcome: outcomeBalance,
+      total: totalBalance,
+    };
   }
 }
 
