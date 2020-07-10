@@ -17,11 +17,11 @@ class TransactionsRepository extends Repository<Transaction> {
     const outcomeTransactions = await this.find({ where: { type: 'outcome' } });
 
     const incomeBalance = incomeTransactions.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.value,
+      (accumulator, currentValue) => accumulator + Number(currentValue.value),
       initialValue,
     );
     const outcomeBalance = outcomeTransactions.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.value,
+      (accumulator, currentValue) => accumulator + Number(currentValue.value),
       initialValue,
     );
 
